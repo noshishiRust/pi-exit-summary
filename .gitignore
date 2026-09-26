@@ -1,4 +1,11 @@
+# Dependencies installed by pnpm
 node_modules/
+
+# Local agent tooling state (Gentle AI / .atl artifacts)
 .atl/
+
+# Organic Driven Development feature tracking documents (session-local working state)
 odd/
+
+# Log files emitted by tools and test runs
 *.log
