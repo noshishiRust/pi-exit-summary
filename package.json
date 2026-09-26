@@ -1,0 +1,29 @@
+{
+	"name": "pi-exit-summary",
+	"version": "0.1.0",
+	"description": "Pi extension that prints a provider-neutral token usage summary when Pi exits",
+	"keywords": ["pi-package"],
+	"license": "MIT",
+	"type": "module",
+	"files": ["src", "README.md", "LICENSE"],
+	"engines": {
+		"node": ">=22.18"
+	},
+	"scripts": {
+		"test": "node --test test/*.test.ts",
+		"check": "tsc --noEmit"
+	},
+	"pi": {
+		"extensions": ["./src/extension.ts"]
+	},
+	"peerDependencies": {
+		"@earendil-works/pi-ai": "*",
+		"@earendil-works/pi-coding-agent": "*"
+	},
+	"devDependencies": {
+		"@earendil-works/pi-ai": "0.87.1",
+		"@earendil-works/pi-coding-agent": "0.87.1",
+		"@types/node": "^24.0.0",
+		"typescript": "^5.9.0"
+	}
+}

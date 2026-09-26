@@ -1,0 +1,4 @@
+node_modules/
+.atl/
+odd/
+*.log
