@@ -1,3 +1,18 @@
+# Supply-chain defense: 7-day quarantine for newly published package
+# versions (10080 minutes; pnpm's default since v11 is 1440). Resolution
+# automatically prefers versions at least 7 days old for every dependency.
+# The only exceptions are the pi 0.87.1 release train below (one lockstep
+# release; its mature predecessors predate the standalone `usage` session
+# entry this extension sums) — delete every entry after 2026-09-29.
+minimumReleaseAge: 10080
+minimumReleaseAgeExclude:
+  # pi 0.87.1 release train published 2026-09-22; mature 2026-09-29
+  - '@earendil-works/pi-ai@0.87.1'
+  - '@earendil-works/pi-coding-agent@0.87.1'
+  - '@earendil-works/chord@0.87.1'
+  - '@earendil-works/pi-agent-core@0.87.1'
+  - '@earendil-works/pi-telemetry@0.87.1'
+  - '@earendil-works/pi-tui@0.87.1'
 allowBuilds:
   '@google/genai': false
   esbuild: false

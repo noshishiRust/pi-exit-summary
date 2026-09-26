@@ -70,6 +70,38 @@ Token usage: total=23,253 input=22,544 (+104,960 cached) output=709 (reasoning 5
   printed the usage line followed by Pi's resume hint; print mode
   (`pi -p`) stayed silent and clean.
 
+## Supply-chain policy
+
+- `minimumReleaseAge: 10080` in `pnpm-workspace.yaml` quarantines newly
+  published package versions for 7 days (10080 minutes; pnpm's default
+  since v11 is 1440 = 1 day). Age-gated resolution automatically picks
+  versions that are at least 7 days old for everything, including
+  transitive dependencies. The only `minimumReleaseAgeExclude` entries
+  are the pi 0.87.1 release train — one lockstep release across
+  `pi-ai`, `pi-coding-agent`, `chord`, `pi-agent-core`, `pi-telemetry`,
+  and `pi-tui` (published 2026-09-22). Its mature predecessors predate
+  the standalone `usage` session entry this extension sums, so the six
+  exact-version entries are a dated exception, deleted after
+  2026-09-29; future pi upgrades pass the normal quarantine gate.
+- Mature direct pins: `oxfmt` 0.68.0 and `oxlint` 1.83.0 (published
+  2026-09-14), `@earendil-works/pi-ai` 0.87.1 and
+  `@earendil-works/pi-coding-agent` 0.87.1 (published 2026-09-22,
+  quarantined exceptions).
+- CI installs with `pnpm install --frozen-lockfile --no-trust-lockfile`,
+  so the committed lockfile is re-verified against these policies on
+  every run instead of being trusted blindly.
+- Dependabot consequence: version-bump PRs stay red until the proposed
+  releases clear the ~7-day quarantine — a deliberate delay, not a
+  broken pipeline.
+- GitHub Actions are pinned to full commit SHAs with version comments
+  (locally via `pinact run`), and CI enforces it with
+  `suzuki-shunsuke/pinact-action` (itself SHA-pinned, `fix: "false"`),
+  which fails the build when any action is unpinned or drifted — it
+  never modifies files.
+- Workflows run with minimal `permissions: contents: read` and
+  `actions/checkout` uses `persist-credentials: false`, so jobs cannot
+  write to the repository and no credentials outlive the checkout step.
+
 ## Non-goals (v1)
 
 - No configuration flags; one deterministic line.
