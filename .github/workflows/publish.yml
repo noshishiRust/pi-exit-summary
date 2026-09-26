@@ -1,6 +1,8 @@
 # Publishes the package to npm when a version tag (v*.*.*) is pushed.
-# Requires the NPM_TOKEN repository secret (an npm token with publish
-# rights for this package); without it the publish step fails.
+# Uses npm trusted publishing (OIDC): no long-lived token. The trusted
+# publisher must be configured on npmjs.com for this repository
+# (noshishiRust/pi-exit-summary, workflow publish.yml, npm publish
+# allowed); without it the publish step fails with ENEEDAUTH.
 name: Publish
 
 on:
@@ -10,6 +12,7 @@ on:
 
 permissions:
   contents: read
+  id-token: write
 
 jobs:
   publish:
@@ -31,9 +34,7 @@ jobs:
         run: pnpm check
       - name: Test
         run: pnpm test
-      - name: Write npm auth to home npmrc
-        run: printf '//registry.npmjs.org/:_authToken=${NODE_AUTH_TOKEN}\n' >> ~/.npmrc
+      # pnpm 12 authenticates via the workflow's OIDC token when
+      # id-token: write is granted; no NODE_AUTH_TOKEN is needed.
       - name: Publish to npm
         run: pnpm publish --access public --no-git-checks
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
