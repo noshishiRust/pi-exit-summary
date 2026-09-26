@@ -5,7 +5,15 @@
 	"keywords": [
 		"pi-package"
 	],
+	"homepage": "https://github.com/noshishiRust/pi-exit-summary#readme",
+	"bugs": {
+		"url": "https://github.com/noshishiRust/pi-exit-summary/issues"
+	},
 	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/noshishiRust/pi-exit-summary.git"
+	},
 	"type": "module",
 	"files": [
 		"src",
@@ -15,6 +23,7 @@
 	"engines": {
 		"node": ">=22.18"
 	},
+	"packageManager": "pnpm@12.6.0",
 	"scripts": {
 		"test": "node --test test/*.test.ts",
 		"check": "tsc --noEmit",
@@ -26,6 +35,9 @@
 		"extensions": [
 			"./src/extension.ts"
 		]
+	},
+	"publishConfig": {
+		"access": "public"
 	},
 	"peerDependencies": {
 		"@earendil-works/pi-ai": "*",

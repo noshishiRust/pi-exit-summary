@@ -1,5 +1,7 @@
 # pi-exit-summary
 
+[![CI](https://github.com/noshishiRust/pi-exit-summary/actions/workflows/ci.yml/badge.svg)](https://github.com/noshishiRust/pi-exit-summary/actions/workflows/ci.yml)
+
 A [Pi](https://pi.dev) extension that prints a Codex-style token usage summary when you exit Pi:
 
 ```text

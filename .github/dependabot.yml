@@ -1,0 +1,22 @@
+version: 2
+updates:
+  # npm dependencies: split into production and development groups so each
+  # lands as its own reviewable set of PRs. increase-if-necessary updates
+  # the manifest only when needed and never widens the peer dependency
+  # ranges (intentionally kept at "*").
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    versioning-strategy: increase-if-necessary
+    groups:
+      production:
+        dependency-type: production
+      development:
+        dependency-type: development
+
+  # Keep the pinned GitHub Actions major tags current.
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
