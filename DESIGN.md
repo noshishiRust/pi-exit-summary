@@ -64,6 +64,8 @@ Token usage: total=23,253 input=22,544 (+104,960 cached) output=709 (reasoning 5
   fallback, segment rendering, small-cost formatting, silence on zero usage.
 - `tsc --noEmit` — strict, types from `@earendil-works/pi-coding-agent` and
   `@earendil-works/pi-ai`.
+- `pnpm lint` / `pnpm fmt:check` — oxlint (correctness category) and oxfmt
+  (tab indent, via `.oxfmtrc.json` / `.oxlintrc.json`).
 - End-to-end in a pty (`script`): `pi -e <pkg>` + one prompt + Ctrl+D
   printed the usage line followed by Pi's resume hint; print mode
   (`pi -p`) stayed silent and clean.

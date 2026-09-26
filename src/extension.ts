@@ -31,7 +31,15 @@ export interface UsageTotals {
 }
 
 export function createUsageTotals(): UsageTotals {
-	return { input: 0, output: 0, cacheRead: 0, cacheWrite: 0, reasoning: 0, totalTokens: 0, cost: 0 };
+	return {
+		input: 0,
+		output: 0,
+		cacheRead: 0,
+		cacheWrite: 0,
+		reasoning: 0,
+		totalTokens: 0,
+		cost: 0,
+	};
 }
 
 /** Sum one Usage record. Mirrors pi semantics: reasoning is part of output, never added twice. */
@@ -42,7 +50,8 @@ export function addUsage(totals: UsageTotals, usage: UsageLike): void {
 	totals.cacheWrite += usage.cacheWrite ?? 0;
 	totals.reasoning += usage.reasoning ?? 0;
 	totals.totalTokens +=
-		usage.totalTokens ?? (usage.input ?? 0) + (usage.output ?? 0) + (usage.cacheRead ?? 0) + (usage.cacheWrite ?? 0);
+		usage.totalTokens ??
+		(usage.input ?? 0) + (usage.output ?? 0) + (usage.cacheRead ?? 0) + (usage.cacheWrite ?? 0);
 	totals.cost += usage.cost?.total ?? 0;
 }
 
@@ -82,7 +91,10 @@ function formatCost(value: number): string {
  */
 export function formatUsageSummary(totals: UsageTotals): string | null {
 	if (totals.totalTokens === 0) return null;
-	const parts = [`total=${formatNumber(totals.totalTokens)}`, `input=${formatNumber(totals.input)}`];
+	const parts = [
+		`total=${formatNumber(totals.totalTokens)}`,
+		`input=${formatNumber(totals.input)}`,
+	];
 	if (totals.cacheRead > 0) parts.push(`(+${formatNumber(totals.cacheRead)} cached)`);
 	if (totals.cacheWrite > 0) parts.push(`(${formatNumber(totals.cacheWrite)} cache write)`);
 	parts.push(`output=${formatNumber(totals.output)}`);

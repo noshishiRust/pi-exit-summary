@@ -29,7 +29,16 @@ function assistantEntry(u: Usage): SessionEntry {
 		id: "a1",
 		parentId: null,
 		timestamp: ts,
-		message: { role: "assistant", content: [], api: "anthropic-messages", provider: "p", model: "m", usage: u, stopReason: "stop", timestamp: 0 },
+		message: {
+			role: "assistant",
+			content: [],
+			api: "anthropic-messages",
+			provider: "p",
+			model: "m",
+			usage: u,
+			stopReason: "stop",
+			timestamp: 0,
+		},
 	};
 }
 
@@ -39,12 +48,29 @@ function toolResultEntry(u: Usage): SessionEntry {
 		id: "t1",
 		parentId: "a1",
 		timestamp: ts,
-		message: { role: "toolResult", toolCallId: "c1", toolName: "x", content: [], usage: u, isError: false, timestamp: 0 },
+		message: {
+			role: "toolResult",
+			toolCallId: "c1",
+			toolName: "x",
+			content: [],
+			usage: u,
+			isError: false,
+			timestamp: 0,
+		},
 	};
 }
 
 function usageEntry(u: Usage, kind = "cache_warm"): SessionEntry {
-	return { type: "usage", id: "u1", parentId: null, timestamp: ts, kind, provider: "p", model: "m", usage: u };
+	return {
+		type: "usage",
+		id: "u1",
+		parentId: null,
+		timestamp: ts,
+		kind,
+		provider: "p",
+		model: "m",
+		usage: u,
+	};
 }
 
 function compactionEntry(u: Usage): SessionEntry {
@@ -62,10 +88,40 @@ function compactionEntry(u: Usage): SessionEntry {
 
 test("collectUsageTotals sums assistant, toolResult, usage, and compaction entries", () => {
 	const totals = collectUsageTotals([
-		assistantEntry(usage({ input: 100, output: 50, cacheRead: 1000, cacheWrite: 200, reasoning: 10, totalTokens: 1350, cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0, total: 0.01 } })),
-		toolResultEntry(usage({ input: 10, output: 5, totalTokens: 15, cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0, total: 0.002 } })),
-		usageEntry(usage({ cacheRead: 5000, totalTokens: 5000, cost: { input: 0, output: 0, cacheRead: 0.015, cacheWrite: 0, total: 0.015 } })),
-		compactionEntry(usage({ input: 20, output: 30, totalTokens: 50, cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0, total: 0.003 } })),
+		assistantEntry(
+			usage({
+				input: 100,
+				output: 50,
+				cacheRead: 1000,
+				cacheWrite: 200,
+				reasoning: 10,
+				totalTokens: 1350,
+				cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0, total: 0.01 },
+			}),
+		),
+		toolResultEntry(
+			usage({
+				input: 10,
+				output: 5,
+				totalTokens: 15,
+				cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0, total: 0.002 },
+			}),
+		),
+		usageEntry(
+			usage({
+				cacheRead: 5000,
+				totalTokens: 5000,
+				cost: { input: 0, output: 0, cacheRead: 0.015, cacheWrite: 0, total: 0.015 },
+			}),
+		),
+		compactionEntry(
+			usage({
+				input: 20,
+				output: 30,
+				totalTokens: 50,
+				cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0, total: 0.003 },
+			}),
+		),
 	]);
 	assert.equal(totals.input, 130);
 	assert.equal(totals.output, 85);
@@ -108,7 +164,10 @@ test("formatUsageSummary shows cache write and formats small costs", () => {
 		totalTokens: 50000,
 		cost: 0.015,
 	});
-	assert.equal(line, "Token usage: total=50,000 input=0 (50,000 cache write) output=0 cost=$0.0150");
+	assert.equal(
+		line,
+		"Token usage: total=50,000 input=0 (50,000 cache write) output=0 cost=$0.0150",
+	);
 });
 
 test("formatUsageSummary stays silent for sessions without usage", () => {
